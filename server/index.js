@@ -1,8 +1,8 @@
 import express from "express";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
-import Formation from "./models/formation"
-import Medicament from "./models/medicaments"
+import Formation from "./models/formation.js"
+import Medicament from "./models/medicament.js"
 
 const app = express();
 dotenv.config();

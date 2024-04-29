@@ -18,6 +18,6 @@ const medicamentSchema = new Schema({
     }
 }, {timestamps: true})
 
-const Medicament = mongoose.model("Formation", medicamentSchema)
+const Medicament = mongoose.model("Medicament", medicamentSchema)
 
-module.exports = Medicament;
+export default Medicament

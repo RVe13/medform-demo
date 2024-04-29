@@ -20,4 +20,4 @@ const formationSchema = new Schema({
 
 const Formation = mongoose.model("Formation", formationSchema)
 
-module.exports = Formation
+export default Formation
