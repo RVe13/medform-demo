@@ -8,6 +8,7 @@ import {
 import { useEffect, useState } from "react";
 import { useRouter, Stack } from "expo-router";
 import Navbar from "../components/navbar";
+import axios from "axios";
 
 const Home = () => {
   return (
