@@ -1,0 +1,21 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "description": "mediform app server",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "nodemon index.js"
+  },
+  "author": "RVe13",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "mongodb": "^6.5.0",
+    "mongoose": "^8.3.2"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.0"
+  }
+}
