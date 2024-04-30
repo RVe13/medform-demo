@@ -5,8 +5,13 @@ const medicamentSchema = new Schema({
     title:{
         type: String, require: true,
     },
+    desctiption: {
+      type: String,
+      require: true,
+    },
     content:{
-        type: String, require: true,
+        type: String,
+        require: true,
     },
     createdAt:{
         type: Date,

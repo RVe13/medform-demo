@@ -73,15 +73,13 @@ app.get("/get-formation", async (req, res) => {
   }
 });
 
-app.get("/get-medicament", (req, res) => {
+app.get("/get-medicament", async (req, res) => {
   try {
-    const medicament = Medicament.find(
-      {},
-      { title: 1, image: 1, createdAt: 1, content: 0 }
-    );
+    const medicament = await Medicament.find()
+      if(!medicament) return res.status(200).send({message: "Medicament is empty"})
     res.status(200).send(medicament);
   } catch (error) {
-    console.log("error");
+    console.log("ERROR IN GET MEDICAMENT", error);
     return res.send({ message: error.message });
   }
 });

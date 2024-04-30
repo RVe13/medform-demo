@@ -2,16 +2,33 @@ import {
   View,
   Text,
   SafeAreaView,
-  ImageBackground,
   StyleSheet,
 } from "react-native";
 import { useEffect, useState } from "react";
-import { useRouter, Stack } from "expo-router";
+import { Stack } from "expo-router";
 import Navbar from "../../components/navbar";
+import CardsList from "../../components/cardsList";
+import axios from "axios";
 
-const Formation = () => {
+const Medicament = () => {
+    const [data, setData] = useState(null)
+      useEffect(()=>{
+    fetchMedicaments()
+       console.log(data)
+   }, []) 
+
+  const fetchMedicaments = async ()=>{
+            try {
+                const medicamentResponse = await axios.get("http://localhost:8000/get-medicament")
+                    setData(medicamentResponse)
+            } catch (error) {
+    console.error('Error fetching data:', error);
+    console.log('Response status:', error.response.status);
+    console.log('Response data:', error.response.data);
+            }
+        } 
   return (
-    <SafeAreaView
+     <SafeAreaView
       style={{
         paddingTop: 50,
         height: "100%",
@@ -24,9 +41,22 @@ const Formation = () => {
       }}
     >
       <Stack.Screen options={{ gestureEnabled: false }} />
-      <Navbar header="medicament" />
+      <View>
+        <Text style={styles.listHeader}>Medicament: </Text>
+        <CardsList cardDataList={data} /> 
+      </View>
+      <Navbar header="formation" />
     </SafeAreaView>
   );
 };
 
-export default Formation;
+
+const styles = StyleSheet.create({
+    listHeader:{
+        paddingBottom: 20,
+        paddingHorizontal: 10,
+        fontSize: 24,
+    }
+})
+
+export default Medicament;

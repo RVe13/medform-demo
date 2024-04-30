@@ -11,6 +11,7 @@ import Navbar from "../components/navbar";
 import axios from "axios";
 
 const Home = () => {
+   
   return (
     <SafeAreaView
       style={{
