@@ -64,7 +64,7 @@ app.get("/get-formation", async (req, res) => {
   try {
     const formations = await Formation.find(
       {},
-      { title: 1, image: 1, createdAt: 1, content: 0 }
+      "_id title description createdAt"
     );
     res.status(200).send(formations);
   } catch (error) {
@@ -75,8 +75,12 @@ app.get("/get-formation", async (req, res) => {
 
 app.get("/get-medicament", async (req, res) => {
   try {
-    const medicament = await Medicament.find()
-      if(!medicament) return res.status(200).send({message: "Medicament is empty"})
+    const medicament = await Medicament.find(
+      {},
+      "_id title description createdAt"
+    );
+    if (!medicament)
+      return res.status(200).send({ message: "Medicament is empty" });
     res.status(200).send(medicament);
   } catch (error) {
     console.log("ERROR IN GET MEDICAMENT", error);

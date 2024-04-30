@@ -4,48 +4,68 @@ import {
   SafeAreaView,
   ImageBackground,
   StyleSheet,
+  Dimensions,
 } from "react-native";
 import { useEffect, useState } from "react";
 import { useRouter, Stack } from "expo-router";
 import Navbar from "../../components/navbar";
 import CardsList from "../../components/cardsList";
+import axios from "axios";
 
 const Formation = () => {
-     const blogDataList = [
-    { id: 1, title: 'Blog 1', author: 'Author 1', content: 'Lorem ipsum...' },
-    { id: 2, title: 'Blog 2', author: 'Author 2', content: 'Lorem ipsum...' },
-    // Add more blog data as needed
-  ];
+  const [data, setData] = useState([]);
+  useEffect(() => {
+    fetchFormation();
+  }, []);
+
+  const fetchFormation = async () => {
+    try {
+      const formationResponse = await axios.get(
+        "http://192.168.1.39:8000/get-formation"
+      );
+      setData(formationResponse.data);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+      console.log("Response status:", error.response.status);
+      console.log("Response data:", error.response.data);
+    }
+  };
   return (
     <SafeAreaView
       style={{
-        paddingTop: 50,
         height: "100%",
         display: "flex",
+        flex: 1,
         flexDirection: "column",
-        justifyContent: "center",
+        justifyContent: "start",
         alignItems: "center",
-        backgroundColor: "#ffffff",
         position: "relative",
+        backgroundColor: "#FFFFFF",
       }}
     >
       <Stack.Screen options={{ gestureEnabled: false }} />
       <View>
         <Text style={styles.listHeader}>Formation: </Text>
-        <CardsList cardDataList={blogDataList} /> 
+        <CardsList cardDataList={data} />
       </View>
       <Navbar header="formation" />
     </SafeAreaView>
   );
 };
 
-
 const styles = StyleSheet.create({
-    listHeader:{
-        paddingBottom: 20,
-        paddingHorizontal: 10,
-        fontSize: 24,
-    }
-})
+  container: {
+    flex: 1,
+    flexDirection: "column",
+    justifyContent: "flex-start",
+    alignItems: "center",
+  },
+  listHeader: {
+    paddingTop: 50,
+    paddingBottom: 20,
+    paddingHorizontal: 10,
+    fontSize: 24,
+  },
+});
 
 export default Formation;

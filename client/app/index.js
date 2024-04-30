@@ -11,7 +11,6 @@ import Navbar from "../components/navbar";
 import axios from "axios";
 
 const Home = () => {
-   
   return (
     <SafeAreaView
       style={{
@@ -37,7 +36,7 @@ const Home = () => {
         <ImageBackground
           source={require("../assets/homebg.png")}
           style={styles.backgroundImage}
-        ></ImageBackground>
+        />
         <Text
           style={{
             position: "absolute",
