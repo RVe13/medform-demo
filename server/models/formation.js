@@ -15,6 +15,10 @@ const formationSchema = new Schema(
       type: Date,
       default: Date.now,
     },
+    image: {
+      data: Buffer,
+      contentType: String,
+    },
   },
   { timestamps: true }
 );
