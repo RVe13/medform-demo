@@ -20,7 +20,7 @@ const Home = () => {
         flexDirection: "column",
         justifyContent: "center",
         alignItems: "center",
-        backgroundColor: "#D4EBFF",
+        backgroundColor: "#ffffff",
         position: "relative",
       }}
     >
@@ -82,8 +82,9 @@ const styles = StyleSheet.create({
   backgroundImage: {
     flex: 1,
     resizeMode: "cover",
-    height: 600,
-    width: 620,
+    height: 400,
+    width: 420,
+    marginTop: 100,
   },
   container: {
     flex: 1,

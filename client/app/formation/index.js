@@ -20,7 +20,7 @@ const Formation = () => {
         flexDirection: "column",
         justifyContent: "center",
         alignItems: "center",
-        backgroundColor: "#D4EBFF",
+        backgroundColor: "#ffffff",
         position: "relative",
       }}
     >

@@ -62,7 +62,7 @@ const styles = StyleSheet.create({
     bottom: 50,
     left: 40,
     right: 40,
-    backgroundColor: "#ffffff",
+    backgroundColor: "#D4EBFF",
     height: 50,
     borderRadius: 50,
   },
@@ -73,7 +73,7 @@ const styles = StyleSheet.create({
     width: 40,
     height: 40,
     borderRadius: 40,
-    backgroundColor: "#D4EBFF",
+    backgroundColor: "#ffffff",
   },
   navbarbtnSelected: {
     display: "flex",
@@ -82,7 +82,7 @@ const styles = StyleSheet.create({
     width: 60,
     height: 60,
     borderRadius: 60,
-    backgroundColor: "#B3D1FB",
+    backgroundColor: "#ffffff",
   },
   btnImg: {
     width: 20,
