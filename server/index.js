@@ -4,11 +4,13 @@ import dotenv from "dotenv";
 import Formation from "./models/formation.js";
 import Medicament from "./models/medicament.js";
 import cors from "cors";
+import multer from "multer";
 
 dotenv.config();
 const app = express();
 app.use(cors());
 app.use(express.json());
+const upload = multer({ dest: 'uploads/' });
 
 const PORT = process.env.PORT || 7000;
 const MONGO_URL = process.env.MONGO_URL;
@@ -23,13 +25,17 @@ mongoose
   })
   .catch((error) => console.log(error));
 
-app.post("/add-formation", async (req, res) => {
-  const { formationBody } = req.body;
-  if (!formationBody)
+app.post("/add-formation",upload.single('image'), async (req, res) => {
+  const { data } = req.body;
+  const imageBuffer = req.file.buffer;
+  if (!data || !imageBuffer)
     return res.status(400).send({ message: "THE FORMATION BODY IS MISSING" });
   const formation = new Formation({
-    title: formationBody.title,
-    constent: formationBody.content,
+    title: data.title,
+    description: data.description,
+      content: data.content, 
+      image: imageBuffer,
+
   });
 
   formation

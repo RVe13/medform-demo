@@ -21,7 +21,7 @@ const Medicament = () => {
   const fetchMedicaments = async () => {
     try {
       const medicamentResponse = await axios.get(
-        "http://192.168.1.39:8000/get-medicament"
+        "http://192.168.1.37:8000/get-medicament"
       );
       setData(medicamentResponse.data);
     } catch (error) {
