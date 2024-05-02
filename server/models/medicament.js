@@ -5,7 +5,7 @@ const medicamentSchema = new Schema({
     title:{
         type: String, require: true,
     },
-    desctiption: {
+    description: {
       type: String,
       require: true,
     },
@@ -18,8 +18,8 @@ const medicamentSchema = new Schema({
         default: Date.now
     },
     image:{
-        data: Buffer,
-        contentType: String,
+        type: String, 
+        require: true
     }
 }, {timestamps: true})
 

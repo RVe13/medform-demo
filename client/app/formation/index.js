@@ -1,11 +1,9 @@
 import {
     View,
     Text,
-    SafeAreaView,
-    ImageBackground,
     StyleSheet,
-    Dimensions,
     Button,
+    TouchableOpacity,
 } from "react-native";
 import { useEffect, useState } from "react";
 import { useRouter, Stack } from "expo-router";
@@ -32,16 +30,14 @@ const Formation = () => {
             console.log("Response data:", error.response.data);
         }
     };
-
-
-    const handleClick = () => {
-        router.navigate("/addMediForm")
+ const navigateToAdd = ()=>{
+        router.navigate("addMediForm")
     }
+
+    
     return (
-        <SafeAreaView
+        <View
             style={{
-                height: "100%",
-                display: "flex",
                 flex: 1,
                 flexDirection: "column",
                 justifyContent: "start",
@@ -51,14 +47,17 @@ const Formation = () => {
             }}
         >
 
-                <Button title="Add" onPress={handleClick} />
             <Stack.Screen options={{ gestureEnabled: false }} />
-            <View>
+            <View style={{flex: 1}}>
                 <Text style={styles.listHeader}>Formation: </Text>
                 <CardsList cardDataList={data} />
             </View>
             <Navbar header="formation" />
-        </SafeAreaView>
+<TouchableOpacity style={styles.addButton} onPress={navigateToAdd}>
+                <Text style={styles.addButtonText}>+</Text>
+            </TouchableOpacity>
+
+        </View>
     );
 };
 
@@ -75,6 +74,21 @@ const styles = StyleSheet.create({
         paddingHorizontal: 10,
         fontSize: 24,
     },
-});
+ addButton: {
+    backgroundColor: '#D4EBFF', // Blue color
+    height: 70,
+    width:70,
+    borderRadius:  50,
+    alignItems: 'center',
+    justifyContent: "center",
+    position: 'absolute',
+    bottom: 150,
+    right: 30,
+        elevation:2,
+  },
+ addButtonText: {
+    color: '#fff',
+      fontSize: 25,
+  },});
 
 export default Formation;

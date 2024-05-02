@@ -4,13 +4,12 @@ import dotenv from "dotenv";
 import Formation from "./models/formation.js";
 import Medicament from "./models/medicament.js";
 import cors from "cors";
-import multer from "multer";
 
 dotenv.config();
 const app = express();
 app.use(cors());
 app.use(express.json());
-const upload = multer({ dest: 'uploads/' });
+
 
 const PORT = process.env.PORT || 7000;
 const MONGO_URL = process.env.MONGO_URL;
@@ -25,16 +24,15 @@ mongoose
   })
   .catch((error) => console.log(error));
 
-app.post("/add-formation",upload.single('image'), async (req, res) => {
-  const { data } = req.body;
-  const imageBuffer = req.file.buffer;
-  if (!data || !imageBuffer)
+app.post("/add-formation", async (req, res) => {
+  const {title, description, content, image} = req.body;
+  if (!title || !image || !description || !content)
     return res.status(400).send({ message: "THE FORMATION BODY IS MISSING" });
   const formation = new Formation({
-    title: data.title,
-    description: data.description,
-      content: data.content, 
-      image: imageBuffer,
+    title: title,
+    description: description,
+      content: content, 
+      image: image,
 
   });
 
@@ -48,13 +46,15 @@ app.post("/add-formation",upload.single('image'), async (req, res) => {
 });
 
 app.post("/add-medicament", async (req, res) => {
-  const medicamentRequest = req.body;
-  if (!medicamentRequest)
+  const {title, description, content, image} = req.body;
+  if (!title || !image || !description || !content)
     return res.status(400).send({ message: "THE MEDICAMENT BODY IS MISSING" });
   const medicament = new Medicament({
-    title: medicamentRequest.title,
-    constent: medicamentRequest.content,
-    image: medicamentRequest.image,
+    title: title,
+    description: description,
+      content: content, 
+      image: image,
+
   });
 
   medicament
@@ -70,8 +70,9 @@ app.get("/get-formation", async (req, res) => {
   try {
     const formations = await Formation.find(
       {},
-      "_id title description createdAt"
+      "_id title description createdAt image"
     );
+      console.log(formations)
     res.status(200).send(formations);
   } catch (error) {
     console.log("error");
@@ -83,7 +84,7 @@ app.get("/get-medicament", async (req, res) => {
   try {
     const medicament = await Medicament.find(
       {},
-      "_id title description createdAt"
+      "_id title description createdAt image"
     );
     if (!medicament)
       return res.status(200).send({ message: "Medicament is empty" });

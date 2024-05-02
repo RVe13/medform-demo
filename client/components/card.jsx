@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity } from "react-native";
+import { View, Text, TouchableOpacity, Image } from "react-native";
 
 const Card = ({ cardData }) => {
   const datePosted = new Date(cardData.createdAt);
@@ -8,31 +8,49 @@ const Card = ({ cardData }) => {
     day: "2-digit",
   });
   return (
-    <TouchableOpacity>
+      <TouchableOpacity>
       <View style={styles.cardContainer}>
-        <Text style={styles.title}>{cardData.title}</Text>
-        <Text style={styles.description}>{cardData.description}</Text>
-        <Text style={styles.date}>● {formattedDate}</Text>
-        {/* Add more blog content here as needed */}
+      <View>
+      <Image source={{ uri: cardData.image }} style={{ width: 130, height: 130, borderRadius: 10, }} />
       </View>
-    </TouchableOpacity>
+      <View style={styles.infoContainer}>
+      <Text style={styles.title}>{cardData.title}</Text>
+      <Text style={styles.description} lineBreakMode="middle" >{cardData.description}</Text>
+      <Text style={styles.date}>● {formattedDate}</Text>
+      {/* Add more blog content here as needed */}
+      </View>
+      </View>
+      </TouchableOpacity>
   );
 };
 
 const styles = {
   cardContainer: {
+      elevation: 3,
+      overflow:"hidden",
+      display: "flex",
+      flexDirection: "row",
+      jusifyContent: "center",
+      alignItems: "center",
+      gap: 20,
     padding: 16,
-    borderWidth: 1,
-    borderColor: "#ccc",
     borderRadius: 8,
-    marginBottom: 16,
     backgroundColor: "#ffffff",
+      minHeight: 200,
   },
+    infoContainer:{
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
+        alignItems: "start",
+        gap: 10
+    },
   title: {
     fontSize: 18,
     fontWeight: "bold",
   },
   description: {
+      width: 200,
     maxHeight: 55,
     fontSize: 14,
     color: "gray",

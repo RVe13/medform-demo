@@ -7,7 +7,7 @@ const formationSchema = new Schema(
             type: String,
             require: true,
         },
-        desctiption: {
+        description: {
             type: String,
             require: true,
         },
@@ -20,8 +20,8 @@ const formationSchema = new Schema(
             default: Date.now,
         },
         image: {
-            data: Buffer,
-            contentType: String,
+            type: String, 
+            require: true
         },
     },
     { timestamps: true }

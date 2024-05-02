@@ -1,8 +1,9 @@
 import React, {useState} from "react"
-import {StyleSheet, Text, View, Button, Image, Alert, TextInput} from "react-native"
+import {StyleSheet, Text, View, Button, Image, Alert, TextInput, TouchableOpacity, ScrollView} from "react-native"
 import * as ImagePicker from 'expo-image-picker';
 import { Picker } from "@react-native-picker/picker"
 import axios from "axios";
+import { router } from "expo-router";
 
 const AddMediForm = ()=>{
     const [title, setTitle] = useState("")
@@ -27,32 +28,31 @@ const AddMediForm = ()=>{
 
     const handleSubmit = async ()=>{
         if(!title || !description || !content || !type || !image){
+            Alert.alert('Information Missing', 'Fill all the fields')
+            return
         }
 
         let route;
         if(type === "Formation") route = "add-formation"
         if(type === "Medicament") route = "add-medicament"
-
-        const formData = new FormData();
-        formData.append('title', title);
-        formData.append('content', content);
-        formData.append('description', description);
-        formData.append('image', {
-            uri: image,
-            type: 'image/jpeg',
-            name: 'image.jpg',
-        });
-
-        const data = {title: title, content: content, description: description, image:{uri: 'image/jpeg', name: 'image.jpg'}}
-
+        
+        const formData = {
+            title, 
+            description,
+            content,
+            image
+        }
 
         console.log(`http://192.168.1.37:8000/${route}`)
         try {
             const response = await axios.post(
                 `http://192.168.1.37:8000/${route}`
-, data);
+, formData);
+            let nextRoute;
+            if(type === "Formation") nextRoute = "formation"
+            else nextRoute = "medicament"
             Alert.alert('Success', 'Blog post created successfully');
-            console.log(response)
+            router.navigate(`${nextRoute}`)
         } catch (error) {
             console.error('Error creating blog post:', error);
             Alert.alert('Error', 'Failed to create blog post');
@@ -60,48 +60,120 @@ const AddMediForm = ()=>{
     }
 
 
+
     return(
-        <View style={styles.container}>
-            <TextInput 
-            placeholder="Title"
-            value={title}
-            onChangeText={setTitle}
-            />
-            <TextInput 
-            placeholder="Description"
-            value={description}
-            onChangeText={setDescription}
-            />
+        <ScrollView contentContainerStyle={styles.container}>
+        <View style={styles.pickerContainer}>
+        <Text style={styles.label}>Type</Text>
+        <Picker
+          selectedValue={type}
+          onValueChange={(itemValue, itemIndex) => setType(itemValue)}
+          style={styles.picker}
+        >
+          <Picker.Item label="Formation" value="Formation" />
+          <Picker.Item label="Medicament" value="Medicament" />
+        </Picker>
+      </View>
+      <Text style={styles.label}>Title</Text>
+      <TextInput
+        style={styles.input}
+        placeholder="Enter title..."
+        value={title}
+        onChangeText={setTitle}
+      />
 
-            <TextInput 
-            placeholder="Content"
-            value={content}
-            onChangeText={setContent}
-            />
+      <Text style={styles.label}>Description</Text>
+      <TextInput
+        style={[styles.input, styles.descriptionInput]}
+        placeholder="Enter description..."
+        value={description}
+        onChangeText={setDescription}
+        multiline={true}
+      />
 
-            <Picker 
-                selectedValue={type}
-                onValueChange={itemValue =>setType(itemValue)}
-            >
-                <Picker.Item label="Formation" value="Formation" />
-                <Picker.Item label="Medicament" value="Medicament" />
-            </Picker>
-            <Button title="Select Image" onPress={selectImage} />
-            {image && <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />}
-            <Button title="Post" onPress={handleSubmit} />
+      <Text style={styles.label}>Content</Text>
+      <TextInput
+        style={[styles.input, styles.contentInput]}
+        placeholder="Enter blog content..."
+        value={content}
+        onChangeText={setContent}
+        multiline={true}
+      />
 
+      <TouchableOpacity style={styles.imagePickerButton} onPress={selectImage}>
+        <Text style={styles.imagePickerButtonText}>Choose Image</Text>
+      </TouchableOpacity>
+
+      {image && (
+        <View style={styles.imageContainer}>
+          <Image source={{ uri: image }} style={styles.image} />
         </View>
+      )}
+        <TouchableOpacity style={styles.postButton} onPress={handleSubmit}>
+  <Text style={styles.postButtonText}>Post</Text>
+</TouchableOpacity>
+    </ScrollView>
     )
 
 }
 
 const styles = StyleSheet.create({
-         container: {
-             marginTop:200
+  container: {
+    padding: 20,
+  },
+    pickerContainer: {
+    marginBottom: 20,
+  },
+  label: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    marginBottom: 5,
+  },
+  input: {
+    borderWidth: 1,
+    borderColor: '#ccc',
+    borderRadius: 5,
+    padding: 10,
+    marginBottom: 10,
+  },
+  descriptionInput: {
+    height: 100,
+  },
+  contentInput: {
+      minHeight: 300,
+  },
+  imagePickerButton: {
+    backgroundColor: '#007bff',
+    borderRadius: 5,
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    alignItems: 'center',
+    marginBottom: 20,
+  },
+  imagePickerButtonText: {
+    color: '#fff',
+    fontWeight: 'bold',
+  },
+  imageContainer: {
+    alignItems: 'center',
+    marginBottom: 20,
   },
   image: {
     width: 200,
     height: 200,
-  },    })
-
+    borderRadius: 5,
+  },
+     postButton: {
+    backgroundColor: '#28a745', // Green color
+    borderRadius: 5,
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    alignItems: 'center',
+    marginTop: 20, // Adjust spacing as needed
+  },
+  postButtonText: {
+    color: '#fff',
+    fontWeight: 'bold',
+  },
+});
 export default AddMediForm

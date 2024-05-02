@@ -1,5 +1,6 @@
-import { Dimensions, FlatList, Text } from "react-native";
+import { Dimensions, FlatList, Text, View } from "react-native";
 import Card from "./card";
+import { GestureHandlerRootView, ScrollView } from "react-native-gesture-handler";
 
 const CardsList = ({ cardDataList }) => {
   return (
@@ -8,12 +9,15 @@ const CardsList = ({ cardDataList }) => {
         <Text style={{ paddingHorizontal: 20 }}>Empty.</Text>
       )}
       <FlatList
-        style={{
+      contentContainerStyle={{
           width: Dimensions.get("window").width,
-          paddingHorizontal: 10,
-        }}
+              padding: 20,
+              flexDirection: "column",
+              justifyContent: "flex-start",
+              alignItems: "center",
+              gap: 10,
+      }}
         data={cardDataList}
-        keyExtractor={(item) => item._id.toString()}
         renderItem={({ item }) => <Card cardData={item} />}
       />
     </>
