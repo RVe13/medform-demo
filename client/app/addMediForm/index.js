@@ -19,10 +19,11 @@ const AddMediForm = ()=>{
       allowsEditing: true,
       aspect: [4, 3],
       quality: 1,
+        base64: true
     });
-
     if (!result.canceled) {
-      setImage(result.assets[0].uri);
+      setImage(`data:image/jpeg;base64,${result.assets[0].base64}`);
+        console.log(image)
     }
     }
 
@@ -51,11 +52,11 @@ const AddMediForm = ()=>{
             let nextRoute;
             if(type === "Formation") nextRoute = "formation"
             else nextRoute = "medicament"
-            Alert.alert('Success', 'Blog post created successfully');
+            Alert.alert('Success', 'post created successfully');
             router.navigate(`${nextRoute}`)
         } catch (error) {
-            console.error('Error creating blog post:', error);
-            Alert.alert('Error', 'Failed to create blog post');
+            console.error('Error creating the post:', error);
+            Alert.alert('Error', 'Failed to create the post');
         }
     }
 

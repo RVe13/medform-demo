@@ -4,11 +4,12 @@ import dotenv from "dotenv";
 import Formation from "./models/formation.js";
 import Medicament from "./models/medicament.js";
 import cors from "cors";
+import bodyParser from "body-parser";
 
 dotenv.config();
 const app = express();
 app.use(cors());
-app.use(express.json());
+app.use(express.json({ limit: '2mb' }))
 
 
 const PORT = process.env.PORT || 7000;
@@ -72,7 +73,6 @@ app.get("/get-formation", async (req, res) => {
       {},
       "_id title description createdAt image"
     );
-      console.log(formations)
     res.status(200).send(formations);
   } catch (error) {
     console.log("error");
@@ -131,3 +131,40 @@ app.get("/get-medicament/:id", async (req, res) => {
     res.status(500).send({ message: error.message });
   }
 });
+
+
+app.delete("/delete-formation/:id", async(req, res)=>{
+const id = req.params.id;
+if (!id) {
+    res.status(400).send({ message: "FORMATION ID IS MISSING" });
+  }
+
+try {
+    await Formation.deleteOne({_id : id})
+    res.status(200).send("formation deleted")
+    
+} catch (error) {
+    res.status(500).send({ message: error.message });
+}
+
+})
+
+app.delete("/delete-medicament/:id", async(req, res)=>{
+const id = req.params.id;
+if (!id) {
+    res.status(400).send({ message: "MEDICAMENTS ID IS MISSING" });
+  }
+
+try {
+    await Medicament.deleteOne({_id : id})
+    res.status(200).send("medicament deleted")
+    
+} catch (error) {
+    res.status(500).send({ message: error.message });
+}
+
+})
+
+
+
+

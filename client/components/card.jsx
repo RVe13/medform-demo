@@ -1,5 +1,6 @@
+import axios from "axios";
+import { router } from "expo-router";
 import { View, Text, TouchableOpacity, Image } from "react-native";
-
 const Card = ({ cardData }) => {
   const datePosted = new Date(cardData.createdAt);
   const formattedDate = datePosted.toLocaleDateString("en-US", {
@@ -7,6 +8,9 @@ const Card = ({ cardData }) => {
     month: "2-digit",
     day: "2-digit",
   });
+
+   
+
   return (
       <TouchableOpacity>
       <View style={styles.cardContainer}>
@@ -22,7 +26,7 @@ const Card = ({ cardData }) => {
       </View>
       </TouchableOpacity>
   );
-};
+}
 
 const styles = {
   cardContainer: {
@@ -37,6 +41,7 @@ const styles = {
     borderRadius: 8,
     backgroundColor: "#ffffff",
       minHeight: 200,
+      position : "relative"
   },
     infoContainer:{
         display: "flex",
@@ -58,6 +63,22 @@ const styles = {
   date: {
     fontSize: 14,
     color: "gray",
+  },
+ deleteButton: {
+     backgroundColor: '#FF0011', // Blue color
+    height: 30,
+    width:30,
+    borderRadius:  50,
+    alignItems: 'center',
+    justifyContent: "center",
+    position: 'absolute',
+    bottom: 10,
+    right: 10,
+
+  },
+ deleteButtonText: {
+    color: '#fff',
+      fontSize: 15,
   },
 };
 
