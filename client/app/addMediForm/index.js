@@ -1,11 +1,12 @@
 import React, {useState} from "react"
-import {StyleSheet, Text, View, Button, Image, Alert, TextInput, TouchableOpacity, ScrollView} from "react-native"
+import {StyleSheet, Text, View, StatusBar, Image, Alert, TextInput, TouchableOpacity, ScrollView, ActivityIndicator} from "react-native"
 import * as ImagePicker from 'expo-image-picker';
 import { Picker } from "@react-native-picker/picker"
 import axios from "axios";
 import { router } from "expo-router";
 
 const AddMediForm = ()=>{
+    const [isLoading, setIsLoading] = useState(false)
     const [title, setTitle] = useState("")
     const [description, setDescription] = useState("")
     const [content , setContent] = useState("")
@@ -43,8 +44,8 @@ const AddMediForm = ()=>{
             content,
             image
         }
+        setIsLoading(true)
 
-        console.log(`http://192.168.1.37:8000/${route}`)
         try {
             const response = await axios.post(
                 `http://192.168.1.37:8000/${route}`
@@ -53,9 +54,11 @@ const AddMediForm = ()=>{
             if(type === "Formation") nextRoute = "formation"
             else nextRoute = "medicament"
             Alert.alert('Success', 'post created successfully');
+            setIsLoading(false)
             router.navigate(`${nextRoute}`)
         } catch (error) {
             console.error('Error creating the post:', error);
+            setIsLoading(false)
             Alert.alert('Error', 'Failed to create the post');
         }
     }
@@ -112,7 +115,14 @@ const AddMediForm = ()=>{
       )}
         <TouchableOpacity style={styles.postButton} onPress={handleSubmit}>
   <Text style={styles.postButtonText}>Post</Text>
+       
 </TouchableOpacity>
+ {/* Loading Overlay */}
+      {isLoading && (
+        <View style={styles.overlay}>
+          <ActivityIndicator size="large" color="white" />
+        </View>
+      )}
     </ScrollView>
     )
 
@@ -121,6 +131,7 @@ const AddMediForm = ()=>{
 const styles = StyleSheet.create({
   container: {
     padding: 20,
+      paddingTop: StatusBar.currentHeight + 20
   },
     pickerContainer: {
     marginBottom: 20,
@@ -175,6 +186,12 @@ const styles = StyleSheet.create({
   postButtonText: {
     color: '#fff',
     fontWeight: 'bold',
+  },
+     overlay: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)', // Transparent black overlay
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });
 export default AddMediForm

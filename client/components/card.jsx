@@ -1,7 +1,7 @@
 import axios from "axios";
 import { router } from "expo-router";
-import { View, Text, TouchableOpacity, Image } from "react-native";
-const Card = ({ cardData }) => {
+import { View, Text, TouchableOpacity, Image, Dimensions } from "react-native";
+const Card = ({ cardData, onPress }) => {
   const datePosted = new Date(cardData.createdAt);
   const formattedDate = datePosted.toLocaleDateString("en-US", {
     year: "numeric",
@@ -12,7 +12,7 @@ const Card = ({ cardData }) => {
    
 
   return (
-      <TouchableOpacity>
+      <TouchableOpacity onPress={onPress}>
       <View style={styles.cardContainer}>
       <View>
       <Image source={{ uri: cardData.image }} style={{ width: 130, height: 130, borderRadius: 10, }} />
@@ -40,7 +40,8 @@ const styles = {
     padding: 16,
     borderRadius: 8,
     backgroundColor: "#ffffff",
-      minHeight: 200,
+      height: 200,
+      width: 382,
       position : "relative"
   },
     infoContainer:{
@@ -51,7 +52,8 @@ const styles = {
         gap: 10
     },
   title: {
-    fontSize: 18,
+    width:200,
+    fontSize: 16,
     fontWeight: "bold",
   },
   description: {

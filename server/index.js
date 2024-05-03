@@ -105,10 +105,9 @@ app.get("/get-formation/:id", async (req, res) => {
     const formation = await Formation.findById(id);
 
     if (!formation) {
-      res.status(404).send("THE FORMATION IS NOT FOUND");
-
-      res.status(200).send(formation);
+      res.status(404).send("THE FORMATION IS NOT FOUND"); 
     }
+      res.status(200).send(formation);
   } catch (error) {
     console.log(error);
     res.status(500).send({ message: error.message });
@@ -118,20 +117,21 @@ app.get("/get-formation/:id", async (req, res) => {
 app.get("/get-medicament/:id", async (req, res) => {
   const id = req.params.id;
   if (!id) {
-    res.status(400).send({ message: "MEDICAMENTS ID IS MISSING" });
+    res.status(400).send({ message: "MEDICAMENT ID IS MISSING" });
   }
 
   try {
-    const medicament = await Medicament.findById(id);
-    if (!medicament) res.status(404).send("THE MEDICAMENT IS NOT FOUND");
+    const medicament= await Medicament.findById(id);
 
-    res.status(200).send(medicament);
+    if (!medicament) {
+      res.status(404).send("THE FORMATION IS NOT FOUND"); 
+    }
+      res.status(200).send(medicament);
   } catch (error) {
     console.log(error);
     res.status(500).send({ message: error.message });
   }
 });
-
 
 app.delete("/delete-formation/:id", async(req, res)=>{
 const id = req.params.id;

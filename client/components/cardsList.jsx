@@ -5,7 +5,7 @@ import { useState, useEffect } from "react";
 import { router } from "expo-router";
 import axios from "axios";
 
-const CardsList = ({  parentPage}) => {
+const CardsList = ({parentPage}) => {
     const [refreshing, setRefreshing] = useState(false);
     const [cardsData, setCardsData] = useState([])
     useEffect(() => {
@@ -20,7 +20,6 @@ const CardsList = ({  parentPage}) => {
             setCardsData(mediFormResponse.data);
         } catch (error) {
             console.error("Error fetching data:", error);
-            console.log("Response status:", error.response.status);
             console.log("Response data:", error.response.data);
         }
     };
@@ -60,12 +59,12 @@ const CardsList = ({  parentPage}) => {
         data={cardsData}
         renderItem={({ item }) =>( 
             <>
-            <Card cardData={item} />
+            <Card cardData={item} onPress={()=>{router.navigate(`${parentPage}/${item._id}`)}}/>
 
-       <TouchableOpacity style={styles.deleteButton} onPress={()=>{deleteMediForm(item._id)}}>
+            <TouchableOpacity style={styles.deleteButton} onPress={()=>{deleteMediForm(item._id)}}>
             <Text style={styles.deleteButtonText}>x</Text>
             </TouchableOpacity>
-</>
+            </>
         ) 
         }
       keyExtractor={item=> item._id}
