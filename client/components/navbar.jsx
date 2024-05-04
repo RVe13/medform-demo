@@ -1,33 +1,40 @@
-import { useState } from "react";
 import {
   View,
-  Text,
   StyleSheet,
   TouchableOpacity,
   ImageBackground,
+  Text,
 } from "react-native";
 
 import { useRouter } from "expo-router";
 
-const Navbar = ({ header }) => {
-  const [currentPage, setCurrentPage] = useState(header);
+const Navbar = () => {
   const router = useRouter();
   const switchToFormation = () => {
-    setCurrentPage("formation");
     router.navigate("formation");
   };
-
+    
   const switchToHome = () => {
-    setCurrentPage("home");
     router.navigate("/");
   };
 
   const switchTomedicament = () => {
-    setCurrentPage("medicament");
     router.navigate("medicament");
   };
+  const switchToError= () => {
+    router.navigate("error");
+  };
+   const navigateToAdd = ()=>{
+        router.navigate("addMediForm")
+    }
   return (
     <View style={styles.navbar}>
+       <TouchableOpacity style={styles.navbarbtn} onPress={switchTomedicament}>
+        <ImageBackground
+          style={styles.btnImg}
+          source={require("../assets/pill.png")}
+        />
+      </TouchableOpacity>
       <TouchableOpacity style={styles.navbarbtn} onPress={switchToFormation}>
         <ImageBackground
           style={styles.btnImg}
@@ -42,12 +49,16 @@ const Navbar = ({ header }) => {
         />
       </TouchableOpacity>
 
-      <TouchableOpacity style={styles.navbarbtn} onPress={switchTomedicament}>
+           <TouchableOpacity style={styles.navbarbtn} onPress={switchToError}>
         <ImageBackground
           style={styles.btnImg}
-          source={require("../assets/pill.png")}
+          source={require("../assets/error.png")}
         />
       </TouchableOpacity>
+
+       <TouchableOpacity style={styles.navbarbtn} onPress={navigateToAdd}>
+           <Text style={styles.addButtonText}>+</Text>
+       </TouchableOpacity>
     </View>
   );
 };
@@ -91,6 +102,10 @@ const styles = StyleSheet.create({
   btnImgSelected: {
     width: 40,
     height: 40,
+  },
+  addButtonText: {
+    color: '#2CA9BC',
+      fontSize: 25,
   },
 });
 

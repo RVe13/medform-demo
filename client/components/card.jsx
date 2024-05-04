@@ -1,5 +1,3 @@
-import axios from "axios";
-import { router } from "expo-router";
 import { View, Text, TouchableOpacity, Image, Dimensions } from "react-native";
 const Card = ({ cardData, onPress }) => {
   const datePosted = new Date(cardData.createdAt);
@@ -9,17 +7,15 @@ const Card = ({ cardData, onPress }) => {
     day: "2-digit",
   });
 
-   
-
   return (
       <TouchableOpacity onPress={onPress}>
       <View style={styles.cardContainer}>
-      <View>
+      {cardData.image && <View>
       <Image source={{ uri: cardData.image }} style={{ width: 130, height: 130, borderRadius: 10, }} />
-      </View>
+      </View>}
       <View style={styles.infoContainer}>
-      <Text style={styles.title}>{cardData.title}</Text>
-      <Text style={styles.description} lineBreakMode="middle" >{cardData.description}</Text>
+      <Text style={cardData.grad ? styles.errorTitle : styles.title}>{cardData.title}</Text>
+      <Text style={cardData.grad ? styles.errorDescription: styles.description} lineBreakMode="middle" >{cardData.description ? cardData.description : cardData.type}{cardData.grad ? " ● " + cardData.grad :""}</Text>
       <Text style={styles.date}>● {formattedDate}</Text>
       {/* Add more blog content here as needed */}
       </View>
@@ -53,15 +49,26 @@ const styles = {
     },
   title: {
     width:200,
-    fontSize: 16,
+    fontSize: 15,
     fontWeight: "bold",
   },
+    errorTitle:{
+      width: 320,
+    fontSize: 15,
+    fontWeight: "bold",
+    },
   description: {
       width: 200,
-    maxHeight: 55,
-    fontSize: 14,
+    maxHeight: 35,
+    fontSize: 12,
     color: "gray",
   },
+    errorDescription:{
+    width: 300,
+    maxHeight: 35,
+    fontSize: 12,
+    color: "gray",
+    },
   date: {
     fontSize: 14,
     color: "gray",

@@ -8,9 +8,7 @@ import { Stack } from "expo-router";
 import Navbar from "../../components/navbar";
 import CardsList from "../../components/cardsList";
 
-const Formation = () => {
-    
-    
+const Error =  () => {
     return (
         <View
             style={{
@@ -25,10 +23,10 @@ const Formation = () => {
 
             <Stack.Screen options={{ gestureEnabled: false }} />
             <View style={{flex: 1}}>
-                <Text style={styles.listHeader}>La Liste Des Formations: </Text>
-                <CardsList parentPage={"formation"}/>
+                <Text style={styles.listHeader}>La Liste Des Errors: </Text>
+                <CardsList parentPage={"error"}/>
             </View>
-            <Navbar header="formation" />
+            <Navbar/>
         </View>
     );
 };
@@ -39,8 +37,7 @@ const styles = StyleSheet.create({
         paddingTop: StatusBar.currentHeight + 30,
         paddingBottom: 20,
         paddingHorizontal: 20,
-        fontSize: 21,
-    },
+        fontSize: 21,    },
  });
 
-export default Formation;
+export default Error;

@@ -5,6 +5,7 @@ import Formation from "./models/formation.js";
 import Medicament from "./models/medicament.js";
 import cors from "cors";
 import bodyParser from "body-parser";
+import Error from "./models/error.js";
 
 dotenv.config();
 const app = express();
@@ -67,6 +68,27 @@ app.post("/add-medicament", async (req, res) => {
     });
 });
 
+app.post("/add-error", async (req, res) => {
+  const {title, errorType, content, grad} = req.body;
+  if (!title || !grad || !errorType || !content)
+    return res.status(400).send({ message: "THE ERROR POST BODY IS MISSING" });
+  const error = new Error({
+    title: title,
+    type: errorType,
+      content: content, 
+      grad: grad,
+
+  });
+
+    error
+    .save()
+    .then((result) => res.status(200).send(result))
+    .catch((err) => {
+      res.status(500).send({ message: err.message });
+      console.log(err.message);
+    });
+});
+
 app.get("/get-formation", async (req, res) => {
   try {
     const formations = await Formation.find(
@@ -94,6 +116,22 @@ app.get("/get-medicament", async (req, res) => {
     return res.send({ message: error.message });
   }
 });
+
+app.get("/get-error", async (req, res) => {
+  try {
+    const error = await Error.find(
+      {},
+      "_id title type createdAt grad"
+    );
+    if (!error)
+      return res.status(200).send({ message: "Error is empty" });
+    res.status(200).send(error);
+  } catch (err) {
+    console.log("ERROR IN GET ERRORS", err);
+    return res.send({ message: err.message });
+  }
+});
+
 
 app.get("/get-formation/:id", async (req, res) => {
   const id = req.params.id;
@@ -133,6 +171,26 @@ app.get("/get-medicament/:id", async (req, res) => {
   }
 });
 
+app.get("/get-error/:id", async (req, res) => {
+  const id = req.params.id;
+  if (!id) {
+    res.status(400).send({ message: "ERROR POST ID IS MISSING" });
+  }
+
+  try {
+    const error = await Error.findById(id);
+
+    if (!error) {
+      res.status(404).send("THE ERROR POST IS NOT FOUND"); 
+    }
+      res.status(200).send(error);
+  } catch (err) {
+    console.log(err);
+    res.status(500).send({ message: err.message });
+  }
+});
+
+
 app.delete("/delete-formation/:id", async(req, res)=>{
 const id = req.params.id;
 if (!id) {
@@ -165,6 +223,19 @@ try {
 
 })
 
+app.delete("/delete-error/:id", async(req, res)=>{
+const id = req.params.id;
+if (!id) {
+    res.status(400).send({ message: "ERROR POST ID IS MISSING" }); }
 
+try {
+    await Error.deleteOne({_id : id})
+    res.status(200).send("Error post deleted")
+    
+} catch (err) {
+    res.status(500).send({ message: err.message });
+}
+
+})
 
 

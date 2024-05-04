@@ -12,6 +12,8 @@ const AddMediForm = ()=>{
     const [content , setContent] = useState("")
     const [type , setType] = useState("Formation")
     const [image, setImage] = useState(null) 
+    const [errorType, setErrorType] = useState("Type 1")
+    const [grad, setGrad] = useState("Grad 1")
 
     const selectImage = async () => {
     // No permissions request is necessary for launching the image library
@@ -48,7 +50,7 @@ const AddMediForm = ()=>{
 
         try {
             const response = await axios.post(
-                `http://192.168.1.37:8000/${route}`
+                `http://192.168.1.33:8000/${route}`
 , formData);
             let nextRoute;
             if(type === "Formation") nextRoute = "formation"
@@ -64,6 +66,35 @@ const AddMediForm = ()=>{
     }
 
 
+    const handleErrorSubmit = async ()=>{
+        if(!title || !errorType || !content || !grad){
+            Alert.alert('Information Missing', 'Fill all the fields')
+            return
+        }
+
+         const formData = {
+            title, 
+            errorType,
+            content,
+             grad
+        }
+        setIsLoading(true)
+
+        try {
+            const response = await axios.post(
+                `http://192.168.1.33:8000/add-error`
+, formData);
+            
+            Alert.alert('Success', 'post created successfully');
+            setIsLoading(false)
+            router.navigate(`error`)
+        } catch (err) {
+            console.error('Error creating the post:', err);
+            setIsLoading(false)
+            Alert.alert('Error', 'Failed to create the post');
+        }
+    }
+
 
     return(
         <ScrollView contentContainerStyle={styles.container}>
@@ -76,6 +107,7 @@ const AddMediForm = ()=>{
         >
           <Picker.Item label="Formation" value="Formation" />
           <Picker.Item label="Medicament" value="Medicament" />
+          <Picker.Item label="Erreur" value="Error" />
         </Picker>
       </View>
       <Text style={styles.label}>Title</Text>
@@ -86,37 +118,66 @@ const AddMediForm = ()=>{
         onChangeText={setTitle}
       />
 
-      <Text style={styles.label}>Description</Text>
+        {type !== "Error" &&(
+            <>
+            <Text style={styles.label}>Description</Text>
       <TextInput
         style={[styles.input, styles.descriptionInput]}
         placeholder="Enter description..."
         value={description}
         onChangeText={setDescription}
         multiline={true}
-      />
+      /></>)}
+
+        {type === "Error" && (
+        <View style={styles.pickerContainer}>
+        <Text style={styles.label}>Type d'erreur</Text>
+        <Picker
+          selectedValue={errorType}
+          onValueChange={(itemValue, itemIndex) => setErrorType(itemValue)}
+          style={styles.picker}
+        >
+          <Picker.Item label="Type 1" value="type 1" />
+          <Picker.Item label="Type 2" value="type 2" />
+          <Picker.Item label="Type 3" value="type 3" />
+        </Picker>
+           <Text style={styles.label}>Grade</Text>
+        <Picker
+          selectedValue={grad}
+          onValueChange={(itemValue, itemIndex) => setGrad(itemValue)}
+          style={styles.picker}
+        >
+          <Picker.Item label="Grad 1" value="grad 1" />
+          <Picker.Item label="Grad 2" value="grad 2" />
+          <Picker.Item label="Grad 3" value="grad 3" />
+        </Picker>
+
+      </View>
+ 
+        )}
 
       <Text style={styles.label}>Content</Text>
       <TextInput
         style={[styles.input, styles.contentInput]}
-        placeholder="Enter blog content..."
+        placeholder="Enter Post content..."
         value={content}
         onChangeText={setContent}
         multiline={true}
       />
 
-      <TouchableOpacity style={styles.imagePickerButton} onPress={selectImage}>
+        {type !== "Error" && (<TouchableOpacity style={styles.imagePickerButton} onPress={selectImage}>
         <Text style={styles.imagePickerButtonText}>Choose Image</Text>
-      </TouchableOpacity>
+      </TouchableOpacity>)}
 
       {image && (
         <View style={styles.imageContainer}>
           <Image source={{ uri: image }} style={styles.image} />
         </View>
       )}
-        <TouchableOpacity style={styles.postButton} onPress={handleSubmit}>
-  <Text style={styles.postButtonText}>Post</Text>
-       
-</TouchableOpacity>
+        
+        <TouchableOpacity style={styles.postButton} onPress={type !== "Error" ? handleSubmit: handleErrorSubmit}>
+            <Text style={styles.postButtonText}>Post</Text>
+        </TouchableOpacity>
  {/* Loading Overlay */}
       {isLoading && (
         <View style={styles.overlay}>

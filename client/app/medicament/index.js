@@ -2,22 +2,13 @@ import {
   View,
   Text,
   StyleSheet,
-  TouchableOpacity,
+  StatusBar,
 } from "react-native";
-import { useEffect, useState } from "react";
-import { Stack, useRouter } from "expo-router";
 import Navbar from "../../components/navbar";
 import CardsList from "../../components/cardsList";
-import axios from "axios";
+import { Stack } from "expo-router";
 
 const Medicament = () => {
-    const router = useRouter();
-   
-    const navigateToAdd = ()=>{
-        router.navigate("addMediForm")
-    }
-
-
     return (
         <View
             style={{
@@ -32,46 +23,20 @@ const Medicament = () => {
 
         <Stack.Screen options={{ gestureEnabled: false }} />
             <View style={{flex: 1}}>
-            <Text style={styles.listHeader}>Medicament: </Text>
+            <Text style={styles.listHeader}>La Liste Des Medicaments: </Text>
         <CardsList parentPage={"medicament"} />
         </View>
         <Navbar header="formation" />
-          <TouchableOpacity style={styles.addButton} onPress={navigateToAdd}>
-                <Text style={styles.addButtonText}>+</Text>
-            </TouchableOpacity>
+          
         </View>
     );
 };
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        flexDirection: "column",
-        justifyContent: "flex-start",
-        alignItems: "center",
-    },
-    listHeader: {
-        paddingTop: 50,
+        listHeader: {
+         paddingTop: StatusBar.currentHeight + 30,
         paddingBottom: 20,
-        paddingHorizontal: 10,
-        fontSize: 24,
-    }, 
-
-    addButton: {
-    backgroundColor: '#D4EBFF', // Blue color
-    height: 50,
-    width:50,
-    borderRadius:  50,
-    alignItems: 'center',
-    justifyContent: "center",
-    position: 'absolute',
-    bottom: 120,
-    right: 50,
-        elevation:2,
-  },
-  addButtonText: {
-    color: '#fff',
-      fontSize: 25,
-  },
-});
+        paddingHorizontal: 20,
+        fontSize: 21,    }, 
+   });
 export default Medicament;

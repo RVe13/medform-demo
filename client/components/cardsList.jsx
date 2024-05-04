@@ -1,6 +1,5 @@
 import { Dimensions, FlatList, Text, TouchableOpacity, View } from "react-native";
 import Card from "./card";
-import { GestureHandlerRootView, RefreshControl, ScrollView } from "react-native-gesture-handler";
 import { useState, useEffect } from "react";
 import { router } from "expo-router";
 import axios from "axios";
@@ -8,6 +7,7 @@ import axios from "axios";
 const CardsList = ({parentPage}) => {
     const [refreshing, setRefreshing] = useState(false);
     const [cardsData, setCardsData] = useState([])
+    const [errorData, setErrorData] = useState([])
     useEffect(() => {
         fetchMediForm();
     }, []);
@@ -15,9 +15,14 @@ const CardsList = ({parentPage}) => {
     const fetchMediForm= async () => {
         try {
             const mediFormResponse = await axios.get(
-                `http://192.168.1.37:8000/get-${parentPage}`
+                `http://192.168.1.33:8000/get-${parentPage}`
             );
-            setCardsData(mediFormResponse.data);
+            if(parentPage === "error"){ 
+               setErrorData(mediFormResponse.data);
+            }
+            else {
+              setCardsData(mediFormResponse.data);
+            }
         } catch (error) {
             console.error("Error fetching data:", error);
             console.log("Response data:", error.response.data);
@@ -26,37 +31,43 @@ const CardsList = ({parentPage}) => {
 
 
     const onRefresh = async()=>{
-       const mediFormResponse = await axios.get(`http://192.168.1.37:8000/get-${parentPage}`)
-        setCardsData(mediFormResponse.data)
+        setRefreshing(true)
+       const mediFormResponse = await axios.get(`http://192.168.1.33:8000/get-${parentPage}`)
+        setRefreshing(false)
+        if(parentPage === "error") setErrorData(mediFormResponse.data)
+        else{setCardsData(mediFormResponse.data)}
     } 
      const deleteMediForm= async(id)=>{
         try {
-            await axios.delete(`http:/192.168.1.37:8000/delete-${parentPage}/${id}`)    
-            console.log(cardsData.filter(item => item._id !== id))
-            setCardsData(cardsData.filter(item => item._id !== id))
+            await axios.delete(`http:/192.168.1.33:8000/delete-${parentPage}/${id}`)    
+           if(parentPage !== "error") setCardsData(cardsData.filter(item => item._id !== id))
+           if(parentPage === "error") setErrorData(errorData.filter(item => item._id !== id))
         } catch (error) {
             console.log(error.message) 
         }
     }
 
-  return (
-    <>
-      {cardsData.length === 0 && (
-        <Text style={{ paddingHorizontal: 20 }}>Empty.</Text>
-      )}
-      <FlatList
-    refreshing={refreshing} 
-      onRefresh={onRefresh}
-      contentContainerStyle={{
-          width: Dimensions.get("window").width,
-              padding: 20,
-              flexDirection: "column",
-              justifyContent: "flex-start",
-              alignItems: "center",
-              gap: 10,
-              paddingBottom: 150,
-      }}
-        data={cardsData}
+    return (
+        <>
+        {(cardsData.length === 0 && parentPage !== "error") && (
+            <Text style={{ paddingHorizontal: 20 }}>Empty.</Text>
+        )}
+        {(errorData.length === 0 && parentPage === "error") && (
+            <Text style={{ paddingHorizontal: 20 }}>Empty.</Text>
+        )}
+        <FlatList
+        refreshing={refreshing} 
+        onRefresh={onRefresh}
+        contentContainerStyle={{
+            width: Dimensions.get("window").width,
+                padding: 20,
+                flexDirection: "column",
+                justifyContent: "flex-start",
+                alignItems: "center",
+                gap: 10,
+                paddingBottom: 150,
+        }}
+        data={parentPage === "error" ? errorData : cardsData}
         renderItem={({ item }) =>( 
             <>
             <Card cardData={item} onPress={()=>{router.navigate(`${parentPage}/${item._id}`)}}/>
@@ -67,10 +78,10 @@ const CardsList = ({parentPage}) => {
             </>
         ) 
         }
-      keyExtractor={item=> item._id}
-      />
-    </>
-  );
+        keyExtractor={item=> item._id}
+        />
+        </>
+    );
 };
 
 

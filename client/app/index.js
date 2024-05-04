@@ -5,10 +5,8 @@ import {
   ImageBackground,
   StyleSheet,
 } from "react-native";
-import { useEffect, useState } from "react";
-import { useRouter, Stack } from "expo-router";
 import Navbar from "../components/navbar";
-import axios from "axios";
+import { Stack } from "expo-router";
 
 const Home = () => {
   return (
@@ -86,10 +84,7 @@ const styles = StyleSheet.create({
     width: 420,
     marginTop: 100,
   },
-  container: {
-    flex: 1,
-    backgroundColor: "#D4EBFF",
-  },
+  
 });
 
 export default Home;
