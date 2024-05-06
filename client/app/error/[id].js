@@ -23,7 +23,6 @@ const singleError= () => {
 
     }, [])
 
-    console.log(error)
 
     return  (
         <ScrollView contentContainerStyle={styles.container}>

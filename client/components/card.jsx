@@ -8,7 +8,6 @@ const Card = ({ cardData, onPress }) => {
     day: "2-digit",
   });
 
-console.log(cardData)
     //since only the error post contain grad am checking for grad if exists to apply the error card style else i apply the mediform style 
   return (
       <TouchableOpacity onPress={onPress}>

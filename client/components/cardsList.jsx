@@ -20,7 +20,6 @@ const CardsList = ({parentPage}) => {
             );
             if(parentPage === "error"){ 
                setErrorData(mediFormResponse.data);
-                console.log(errorData)
             }
             else {
               setCardsData(mediFormResponse.data);
