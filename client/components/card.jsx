@@ -8,6 +8,8 @@ const Card = ({ cardData, onPress }) => {
     day: "2-digit",
   });
 
+console.log(cardData)
+    //since only the error post contain grad am checking for grad if exists to apply the error card style else i apply the mediform style 
   return (
       <TouchableOpacity onPress={onPress}>
       <View style={styles.cardContainer}>
@@ -16,7 +18,11 @@ const Card = ({ cardData, onPress }) => {
       </View>}
       <View style={styles.infoContainer}>
       <Text style={cardData.grad ? styles.errorTitle : styles.title}>{cardData.title}</Text>
-      <Text style={cardData.grad ? styles.errorDescription: styles.description} lineBreakMode="middle" >{cardData.description ? cardData.description : cardData.type}{cardData.grad ? " ● " + cardData.grad :""}</Text>
+      <Text style={styles.description} lineBreakMode="middle" >{cardData.description}</Text>
+      {cardData.errorNature &&(<>
+      <Text style={styles.errorDescription}>Type d'erreur: {cardData.errorType}{"\nNature de l'erreur: "}{cardData.errorNature === "Autre" ? cardData.errorNatureDescription : cardData.errorNature }</Text>
+      <Text style={styles.errorDescription}>Correction immediate: {cardData.correction}</Text>
+      </>)}
       <Text style={styles.date}>● {formattedDate}</Text>
       {/* Add more blog content here as needed */}
       </View>
@@ -46,7 +52,7 @@ const styles = {
         flexDirection: "column",
         justifyContent: "center",
         alignItems: "start",
-        gap: 10
+        gap: 10  
     },
   title: {
     width:200,

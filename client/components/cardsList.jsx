@@ -1,9 +1,9 @@
-import { Dimensions, FlatList, Text, TouchableOpacity, View } from "react-native";
+import { Alert, Dimensions, FlatList, Text, TouchableOpacity, View } from "react-native";
 import Card from "./card";
 import { useState, useEffect } from "react";
 import { router } from "expo-router";
 import axios from "axios";
-import {SERVER_URL} from "@env"
+import {SERVER_URL, API_KEY} from "@env"
 
 const CardsList = ({parentPage}) => {
     const [refreshing, setRefreshing] = useState(false);
@@ -20,6 +20,7 @@ const CardsList = ({parentPage}) => {
             );
             if(parentPage === "error"){ 
                setErrorData(mediFormResponse.data);
+                console.log(errorData)
             }
             else {
               setCardsData(mediFormResponse.data);
@@ -39,11 +40,12 @@ const CardsList = ({parentPage}) => {
     } 
      const deleteMediForm= async(id)=>{
         try {
-            await axios.delete(`${SERVER_URL}/delete-${parentPage}/${id}`, {headers:{"Authorization" : `Bearer ${API_KEY}`}})    
+            await axios.delete(`${SERVER_URL}/delete-${parentPage}/${id}`, {headers:{"Authorization" : API_KEY}})    
            if(parentPage !== "error") setCardsData(cardsData.filter(item => item._id !== id))
            if(parentPage === "error") setErrorData(errorData.filter(item => item._id !== id))
         } catch (error) {
             console.log(error.message) 
+            Alert.alert('Error', 'Failed to delete the post');
         }
     }
 

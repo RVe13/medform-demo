@@ -23,12 +23,37 @@ const singleError= () => {
 
     }, [])
 
+    console.log(error)
+
     return  (
         <ScrollView contentContainerStyle={styles.container}>
-           <Text style={styles.title}>{error.title}</Text>
-           <Text style={styles.description}>● Grad: {error.grad}</Text>
-           <Text style={styles.description}>● Type: {error.type}</Text>
-           <Text style={styles.content}>{error.content}</Text>
+           <Text style={styles.mainTitle}>{error.title}</Text>
+           <Text style={styles.title}>● Nom du medicament:</Text>
+           <Text style={styles.description}>{error.medicamentName}</Text>
+           <Text style={styles.title}>● Dosage:</Text>
+           <Text style={styles.description}>{error.dosage}</Text>
+           <Text style={styles.title}>● Pesonne impliquée dans l'erreur:</Text>
+           <Text style={styles.description}>{error.grad === "Autre" ? error.gradDescription : error.grad}</Text>
+           <Text style={styles.title}>● Type d'erreur:</Text>
+           <Text style={styles.description}>{error.errorType}</Text>
+           <Text style={styles.title}>● Nature de l'erreur:</Text>
+           <Text style={styles.description}>{error.errorNature === "Autre" ? error.errorNatureDescription : error.errorNature}</Text>
+           <Text style={styles.title}>● Correction immediate:</Text>
+           <Text style={styles.description}>{error.correction}</Text>
+           <Text style={styles.title}>● Voie d'administration:</Text>
+           <Text style={styles.description}>{error.voie === "Autre" ? error.voieDescription : error.voie}</Text>
+           <Text style={styles.title}>● Source de medicament:</Text>
+           <Text style={styles.description}>{error.medicamentSource}</Text>
+           <Text style={styles.title}>● Circonstance de l'erreur:</Text>
+           <Text style={styles.description}>{error.errorCause === "Autre" ? error.errorCauseDescription : error.errorCause}</Text>
+           <Text style={styles.title}>● Consequences sur le patient:</Text>
+           <Text style={styles.description}>{error.concequence}</Text>
+           {error.consequenceDescription && (
+               <> 
+           <Text style={styles.title}>● Détails des consequences:</Text>
+           <Text style={styles.description}>{error.consequenceDescription}</Text>
+                </>
+           )}
         </ScrollView>
 
     )
@@ -47,12 +72,21 @@ const styles = StyleSheet.create({
         paddingTop : StatusBar.currentHeight + 20,
         paddingHorizontal: 30,
     },
-    title:{
-        width: '100%',
+    mainTitle:{
+         width: '100%',
         fontSize: 20,
         color: "#000",
         textAlign: "left",
         fontWeight: "bold"
+    },
+
+    title:{
+        marginTop: 10,
+        width: '100%',
+        fontSize: 14,
+        fontWeight: "bold",
+        color: "#000",
+        textAlign: "left",
          
     },
     content:{

@@ -29,6 +29,7 @@ mongoose
 // Middleware to check API key
 function checkAPIKey(req, res, next) {
   const apiKey = req.headers.authorization;
+  
 
   // Check if the API key matches the admin API key
   if (apiKey && apiKey === API_KEY) {
@@ -81,14 +82,26 @@ app.post("/add-medicament",checkAPIKey , async (req, res) => {
 });
 
 app.post("/add-error", async (req, res) => {
-  const {title, errorType, content, grad} = req.body;
-  if (!title || !grad || !errorType || !content)
+  const { title, errorType, errorNature, voieDescription ,gradDescription,concequenceDescription, errorNatureDescription,causeDescription,medicamentName, dosage, errorCause,grad, voie, medicamentSource, correction, consequence} = req.body;
+  if (!title || !errorType || !errorNature || !medicamentName || !dosage || !errorCause || !grad || !voie || !medicamentSource || !correction || !consequence)
     return res.status(400).send({ message: "THE ERROR POST BODY IS MISSING" });
   const error = new Error({
     title: title,
-    type: errorType,
-      content: content, 
-      grad: grad,
+    medicamentName: medicamentName,
+    dosage: dosage,
+    errorType: errorType,
+    errorNature: errorNature,
+    errorNatureDescription: errorNatureDescription ? errorNatureDescription : "",
+    errorCause: errorCause,
+    errorCauseDescription: causeDescription ? causeDescription : "",
+    voie: voie,
+    voieDescription: voieDescription ? voieDescription : "",
+    grad: grad,
+    gradDescription: gradDescription ? gradDescription : "",
+    medicamentSource: medicamentSource,
+    correction: correction,
+    concequence: consequence,
+    concequenceDescription:concequenceDescription ? concequenceDescription : "" 
 
   });
 
@@ -106,7 +119,7 @@ app.get("/get-formation", async (req, res) => {
     const formations = await Formation.find(
       {},
       "_id title description createdAt image"
-    );
+    ).sort({ createdAt: -1 });
     res.status(200).send(formations);
   } catch (error) {
     console.log("error");
@@ -119,7 +132,7 @@ app.get("/get-medicament", async (req, res) => {
     const medicament = await Medicament.find(
       {},
       "_id title description createdAt image"
-    );
+    ).sort({ createdAt: -1 });
     if (!medicament)
       return res.status(200).send({ message: "Medicament is empty" });
     res.status(200).send(medicament);
@@ -133,8 +146,8 @@ app.get("/get-error", async (req, res) => {
   try {
     const error = await Error.find(
       {},
-      "_id title type createdAt grad"
-    );
+      "_id title medicamentName createdAt grad gradDescription errorType errorNature errorNatureDescription correction"
+    ).sort({ createdAt: -1 });
     if (!error)
       return res.status(200).send({ message: "Error is empty" });
     res.status(200).send(error);
