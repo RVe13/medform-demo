@@ -19,9 +19,9 @@
         }
       ]
     ],
-    "name": "MediForm Admin",
+    "name": "MediForm",
     "icon": "./assets/pill.png",
-    "slug": "Admin",
+    "slug": "user",
     "extra": {
       "router": {
         "origin": false

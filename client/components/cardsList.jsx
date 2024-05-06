@@ -3,7 +3,7 @@ import Card from "./card";
 import { useState, useEffect } from "react";
 import { router } from "expo-router";
 import axios from "axios";
-import {SERVER_URL, API_KEY} from "@env"
+import {SERVER_URL} from "@env"
 
 const CardsList = ({parentPage}) => {
     const [refreshing, setRefreshing] = useState(false);
@@ -37,16 +37,7 @@ const CardsList = ({parentPage}) => {
         if(parentPage === "error") setErrorData(mediFormResponse.data)
         else{setCardsData(mediFormResponse.data)}
     } 
-     const deleteMediForm= async(id)=>{
-        try {
-            await axios.delete(`${SERVER_URL}/delete-${parentPage}/${id}`, {headers:{"Authorization" : API_KEY}})    
-           if(parentPage !== "error") setCardsData(cardsData.filter(item => item._id !== id))
-           if(parentPage === "error") setErrorData(errorData.filter(item => item._id !== id))
-        } catch (error) {
-            console.log(error.message) 
-            Alert.alert('Error', 'Failed to delete the post');
-        }
-    }
+    
 
     return (
         <>
@@ -70,13 +61,7 @@ const CardsList = ({parentPage}) => {
         }}
         data={parentPage === "error" ? errorData : cardsData}
         renderItem={({ item }) =>( 
-            <>
             <Card cardData={item} onPress={()=>{router.navigate(`${parentPage}/${item._id}`)}}/>
-
-            <TouchableOpacity style={styles.deleteButton} onPress={()=>{deleteMediForm(item._id)}}>
-            <Text style={styles.deleteButtonText}>x</Text>
-            </TouchableOpacity>
-            </>
         ) 
         }
         keyExtractor={item=> item._id}
@@ -84,25 +69,5 @@ const CardsList = ({parentPage}) => {
         </>
     );
 };
-
-
-const styles = {
-deleteButton: {
-    backgroundColor: '#FF0088', // Blue color
-    height: 30,
-    width:30,
-    borderRadius:  50,
-    alignItems: "center",
-    justifyContent: "center",
-    position: 'absolute',
-    bottom: 10,
-    right: 10,
-  },
- deleteButtonText: {
-    color: '#fff',
-      fontSize: 15,
-  },
-
-}
 
 export default CardsList;

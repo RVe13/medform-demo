@@ -11,15 +11,13 @@
       "ios":{"simulator":true},
       "android": {"buildType" : "apk"},
         "env": {
-          "SERVER_URL": "https://mediform-admin.onrender.com",
-          "API_KEY" : "e5b7d430-6fb6-4710-b604-6a96666f2c7b"
+          "SERVER_URL": "https://mediform-admin.onrender.com"
         }
 
     },
     "production": {
         "env": {
-          "SERVER_URL": "https://mediform-admin.onrender.com",
-          "API_KEY" : "e5b7d430-6fb6-4710-b604-6a96666f2c7b"
+          "SERVER_URL": "https://mediform-admin.onrender.com"
         }
     }
   },

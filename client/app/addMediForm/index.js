@@ -9,12 +9,9 @@ import {SERVER_URL, API_KEY} from "@env"
 const AddMediForm = ()=>{
     const [isLoading, setIsLoading] = useState(false)
     const [title, setTitle] = useState("")
-    const [content, setContent] = useState("")
-    const [description, setDescription] = useState("")
     const [medicamentName, setMedicamentName] = useState("")
     const [dosage, setDosage] = useState("")
-    const [type , setType] = useState("Formation")
-    const [image, setImage] = useState(null) 
+    const [type , setType] = useState("Error")
     const [voie ,setVoie] = useState("Orale")
     const [voieDescription, setVoieDescription] = useState("")
     const [errorType, setErrorType] = useState("Erreur de prescription")
@@ -38,55 +35,6 @@ const AddMediForm = ()=>{
     const medicamentSourceArray = ["Pharmacie de l'hopital", "Pharmacie externe"] 
 
     
-    const selectImage = async () => {
-    // No permissions request is necessary for launching the image library
-    let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.All,
-      allowsEditing: true,
-      aspect: [4, 3],
-      quality: 1,
-        base64: true
-    });
-    if (!result.canceled) {
-      setImage(`data:image/jpeg;base64,${result.assets[0].base64}`);
-    }
-    }
-
-    const handleSubmit = async ()=>{
-        if(!title || !description || !content || !type || !image){
-            Alert.alert('Information Missing', 'Fill all the fields')
-            return
-        }
-
-        let route;
-        if(type === "Formation") route = "add-formation"
-        if(type === "Medicament") route = "add-medicament"
-        
-        const formData = {
-            title, 
-            description,
-            content,
-            image
-        }
-        setIsLoading(true)
-
-        try {
-            const response = await axios.post(
-                `${SERVER_URL}/${route}`
-, formData, {headers:{"Authorization" : API_KEY}});
-            let nextRoute;
-            if(type === "Formation") nextRoute = "formation"
-            else nextRoute = "medicament"
-            Alert.alert('Success', 'post created successfully');
-            setIsLoading(false)
-            router.navigate(`${nextRoute}`)
-        } catch (error) {
-            console.error('Error creating the post:', error);
-            setIsLoading(false)
-            Alert.alert('Error', 'Failed to create the post');
-        }
-    }
-
 
     const handleErrorSubmit = async ()=>{
         if(!title || !medicamentName || !dosage ||((voie === "Autre" && !voieDescription) ||(errorNature === "Autre" && !errorNatureDescription) || (grad === "Autre" && !gradDescription)|| (errorCause === "Autre" && !causeDescription)||((consequence !== "Détectée et corrigée immédiatement" &&  consequence !== "Aucune conséquence observée") && !consequenceDescription)) ){
@@ -139,8 +87,6 @@ const AddMediForm = ()=>{
           onValueChange={(itemValue, itemIndex) => setType(itemValue)}
           style={styles.picker}
         >
-          <Picker.Item label="Formation" value="Formation" />
-          <Picker.Item label="Medicament" value="Medicament" />
           <Picker.Item label="Erreur" value="Error" />
         </Picker>
       </View>
@@ -151,17 +97,6 @@ const AddMediForm = ()=>{
         value={title}
         onChangeText={setTitle}
       />
-
-        {type !== "Error" &&(
-            <>
-            <Text style={styles.label}>Description</Text>
-      <TextInput
-        style={[styles.input, styles.descriptionInput]}
-        placeholder="Entrez description..."
-        value={description}
-        onChangeText={setDescription}
-        multiline={true}
-      /></>)}
 
         {type === "Error" && (
         <View style={styles.pickerContainer}>
@@ -343,29 +278,8 @@ const AddMediForm = ()=>{
       </View>
  
         )}
-
-        {type !== "Error" &&(
-            <>
-            <Text style={styles.label}>Content</Text>
-            <TextInput
-            style={[styles.input, styles.contentInput]}
-            placeholder="Enter Post content..."
-            value={content}
-            onChangeText={setContent}
-            multiline={true}
-            /></>)}
-
-        {type !== "Error" && (<TouchableOpacity style={styles.imagePickerButton} onPress={selectImage}>
-        <Text style={styles.imagePickerButtonText}>Choose Image</Text>
-      </TouchableOpacity>)}
-
-      {image && (
-        <View style={styles.imageContainer}>
-          <Image source={{ uri: image }} style={styles.image} />
-        </View>
-      )}
-        
-        <TouchableOpacity style={styles.postButton} onPress={type !== "Error" ? handleSubmit: handleErrorSubmit}>
+       
+        <TouchableOpacity style={styles.postButton} onPress={handleErrorSubmit}>
             <Text style={styles.postButtonText}>Post</Text>
         </TouchableOpacity>
  {/* Loading Overlay */}
