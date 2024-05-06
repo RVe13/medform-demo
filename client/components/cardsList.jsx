@@ -3,6 +3,7 @@ import Card from "./card";
 import { useState, useEffect } from "react";
 import { router } from "expo-router";
 import axios from "axios";
+import {SERVER_URL} from "@env"
 
 const CardsList = ({parentPage}) => {
     const [refreshing, setRefreshing] = useState(false);
@@ -15,7 +16,7 @@ const CardsList = ({parentPage}) => {
     const fetchMediForm= async () => {
         try {
             const mediFormResponse = await axios.get(
-                `http://192.168.1.33:8000/get-${parentPage}`
+                `${SERVER_URL}/get-${parentPage}`
             );
             if(parentPage === "error"){ 
                setErrorData(mediFormResponse.data);
@@ -25,21 +26,20 @@ const CardsList = ({parentPage}) => {
             }
         } catch (error) {
             console.error("Error fetching data:", error);
-            console.log("Response data:", error.response.data);
         }
     };
 
 
     const onRefresh = async()=>{
         setRefreshing(true)
-       const mediFormResponse = await axios.get(`http://192.168.1.33:8000/get-${parentPage}`)
+       const mediFormResponse = await axios.get(`${SERVER_URL}/get-${parentPage}`)
         setRefreshing(false)
         if(parentPage === "error") setErrorData(mediFormResponse.data)
         else{setCardsData(mediFormResponse.data)}
     } 
      const deleteMediForm= async(id)=>{
         try {
-            await axios.delete(`http:/192.168.1.33:8000/delete-${parentPage}/${id}`)    
+            await axios.delete(`${SERVER_URL}/delete-${parentPage}/${id}`, {headers:{"Authorization" : `Bearer ${API_KEY}`}})    
            if(parentPage !== "error") setCardsData(cardsData.filter(item => item._id !== id))
            if(parentPage === "error") setErrorData(errorData.filter(item => item._id !== id))
         } catch (error) {

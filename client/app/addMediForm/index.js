@@ -4,6 +4,7 @@ import * as ImagePicker from 'expo-image-picker';
 import { Picker } from "@react-native-picker/picker"
 import axios from "axios";
 import { router } from "expo-router";
+import {SERVER_URL, API_KEY} from "@env"
 
 const AddMediForm = ()=>{
     const [isLoading, setIsLoading] = useState(false)
@@ -50,8 +51,8 @@ const AddMediForm = ()=>{
 
         try {
             const response = await axios.post(
-                `http://192.168.1.33:8000/${route}`
-, formData);
+                `${SERVER_URL}/${route}`
+, formData, {headers:{"Authorization" : `Bearer ${API_KEY}`}});
             let nextRoute;
             if(type === "Formation") nextRoute = "formation"
             else nextRoute = "medicament"
@@ -82,7 +83,7 @@ const AddMediForm = ()=>{
 
         try {
             const response = await axios.post(
-                `http://192.168.1.33:8000/add-error`
+                `${SERVER_URL}/add-error`
 , formData);
             
             Alert.alert('Success', 'post created successfully');

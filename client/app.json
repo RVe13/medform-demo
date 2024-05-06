@@ -19,7 +19,18 @@
         }
       ]
     ],
-    "name": "client",
-    "slug": "client"
+    "name": "MediForm Admin",
+    "slug": "Admin",
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "58bb20ad-5f3c-4516-bc3f-9cbca553c266"
+      }
+    },
+    "android": {
+      "package": "com.mediform.Admin"
+    }
   }
 }

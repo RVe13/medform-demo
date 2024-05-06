@@ -1,4 +1,5 @@
-import { View, Text, TouchableOpacity, Image, Dimensions } from "react-native";
+import { View, Text, TouchableOpacity, Image} from "react-native";
+
 const Card = ({ cardData, onPress }) => {
   const datePosted = new Date(cardData.createdAt);
   const formattedDate = datePosted.toLocaleDateString("en-US", {

@@ -13,6 +13,8 @@
     "@react-native-picker/picker": "^2.7.5",
     "axios": "^1.6.8",
     "babel-preset-expo": "^10.0.2",
+    "dotenv": "^16.4.5",
+    "eas-cli": "^8.0.0",
     "expo": "^50.0.1",
     "expo-constants": "~15.4.5",
     "expo-font": "^11.10.3",
@@ -25,7 +27,6 @@
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-native": "^0.73.6",
-    "react-native-dotenv": "^3.4.11",
     "react-native-gesture-handler": "~2.14.0",
     "react-native-image-picker": "^7.1.2",
     "react-native-safe-area-context": "4.8.2",
@@ -33,7 +34,8 @@
     "react-native-web": "~0.19.6"
   },
   "devDependencies": {
-    "@babel/core": "^7.20.0"
+    "@babel/core": "^7.20.0",
+    "react-native-dotenv": "^3.4.11"
   },
   "private": true
 }

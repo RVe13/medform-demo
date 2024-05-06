@@ -2,6 +2,7 @@ import axios from "axios";
 import { useLocalSearchParams } from "expo-router";
 import { useEffect, useState } from "react";
 import { ScrollView, Text, StatusBar, View, StyleSheet, } from "react-native";
+import {SERVER_URL} from "@env"
 
 const singleError= () => {
     const {id} = useLocalSearchParams();
@@ -10,7 +11,7 @@ const singleError= () => {
     useEffect(() =>{
         const fetchError = async ()=>{
             try {
-                const formationResponse = await axios.get(`http://192.168.1.33:8000/get-error/${id}`)
+                const formationResponse = await axios.get(`${SERVER_URL}/get-error/${id}`)
                 setError(formationResponse.data)
             } catch (err) {
                console.log(err) 

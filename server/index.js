@@ -4,7 +4,6 @@ import dotenv from "dotenv";
 import Formation from "./models/formation.js";
 import Medicament from "./models/medicament.js";
 import cors from "cors";
-import bodyParser from "body-parser";
 import Error from "./models/error.js";
 
 dotenv.config();
@@ -15,6 +14,7 @@ app.use(express.json({ limit: '2mb' }))
 
 const PORT = process.env.PORT || 7000;
 const MONGO_URL = process.env.MONGO_URL;
+const API_KEY = process.env.API_KEY
 
 mongoose
   .connect(MONGO_URL, { useNewUrlParser: true, useUnifiedTopology: true })
@@ -26,7 +26,19 @@ mongoose
   })
   .catch((error) => console.log(error));
 
-app.post("/add-formation", async (req, res) => {
+// Middleware to check API key
+function checkAPIKey(req, res, next) {
+  const apiKey = req.headers.authorization;
+
+  // Check if the API key matches the admin API key
+  if (apiKey && apiKey === API_KEY) {
+    next(); // API key is valid, proceed to the route handler
+  } else {
+    res.status(401).json({ error: 'Unauthorized' });
+  }
+}
+
+app.post("/add-formation",checkAPIKey ,async (req, res) => {
   const {title, description, content, image} = req.body;
   if (!title || !image || !description || !content)
     return res.status(400).send({ message: "THE FORMATION BODY IS MISSING" });
@@ -47,7 +59,7 @@ app.post("/add-formation", async (req, res) => {
     });
 });
 
-app.post("/add-medicament", async (req, res) => {
+app.post("/add-medicament",checkAPIKey , async (req, res) => {
   const {title, description, content, image} = req.body;
   if (!title || !image || !description || !content)
     return res.status(400).send({ message: "THE MEDICAMENT BODY IS MISSING" });
@@ -191,7 +203,7 @@ app.get("/get-error/:id", async (req, res) => {
 });
 
 
-app.delete("/delete-formation/:id", async(req, res)=>{
+app.delete("/delete-formation/:id",checkAPIKey , async(req, res)=>{
 const id = req.params.id;
 if (!id) {
     res.status(400).send({ message: "FORMATION ID IS MISSING" });
@@ -207,7 +219,7 @@ try {
 
 })
 
-app.delete("/delete-medicament/:id", async(req, res)=>{
+app.delete("/delete-medicament/:id",checkAPIKey , async(req, res)=>{
 const id = req.params.id;
 if (!id) {
     res.status(400).send({ message: "MEDICAMENTS ID IS MISSING" });
@@ -223,7 +235,7 @@ try {
 
 })
 
-app.delete("/delete-error/:id", async(req, res)=>{
+app.delete("/delete-error/:id",checkAPIKey , async(req, res)=>{
 const id = req.params.id;
 if (!id) {
     res.status(400).send({ message: "ERROR POST ID IS MISSING" }); }
