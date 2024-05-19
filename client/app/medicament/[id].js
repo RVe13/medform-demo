@@ -3,10 +3,15 @@ import { useLocalSearchParams } from "expo-router";
 import { useEffect, useState } from "react";
 import { Image, ScrollView, Text, StatusBar, Dimensions } from "react-native";
 import {SERVER_URL} from "@env"
+import { useFonts } from "expo-font";
 
 const singleMedicament= () => {
     const {id} = useLocalSearchParams();
     const [medicament, setMedicament] = useState({})
+    let [fonts] = useFonts({
+        'Righteous-Regular': require('../../assets/fonts/Righteous-Regular.ttf'),
+        'PoetsenOne-Regular': require('../../assets/fonts/PoetsenOne-Regular.ttf'),
+    })
     
     useEffect(() =>{
         const fetchMedicament = async ()=>{
@@ -36,37 +41,42 @@ const singleMedicament= () => {
 }
 
 
+
 const styles = {
-    container:{
+    container: {
         minHeight: '100%',
         backgroundColor: "#FFF",
         flexDirection: "columnt",
         justifyContent: "flex-start",
         alignItems: "center",
         gap: 10,
-        paddingTop : StatusBar.currentHeight + 20,
+        paddingTop: StatusBar.currentHeight + 20,
         paddingHorizontal: 30,
     },
-    title:{
+    title: {
+        fontFamily: "serif",
+        fontStyle: "italic",
         width: '100%',
-        fontSize: 20,
+        fontSize: 24,
         color: "#000",
         textAlign: "left",
-        fontWeight: "bold"
-         
+        fontWeight: "900",
+        marginBottom: 10,
+
     },
-    content:{
+    content: {
         width: '100%',
-        fontSize: 16,
+        fontSize: 14,
+        letterSpacing: 1,
         textAlign: "left",
     },
     description: {
-      width: '100%',
-    fontSize: 16,
-    marginBottom: 20,
-  },
-
-
+        fontFamily: "PoetsenOne-Regular",
+        color: "red",
+        width: '100%',
+        fontSize: 16,
+        marginBottom: 20,
+    },
 }
 
 

@@ -17,7 +17,7 @@ const Medicament = () => {
                 justifyContent: "start",
                 alignItems: "center",
                 position: "relative",
-                backgroundColor: "#FFFFFF",
+                backgroundColor: "#bdd8fc",
             }}
         >
 
@@ -34,6 +34,7 @@ const Medicament = () => {
 
 const styles = StyleSheet.create({
         listHeader: {
+            color: "white",
          paddingTop: StatusBar.currentHeight + 30,
         paddingBottom: 20,
         paddingHorizontal: 20,

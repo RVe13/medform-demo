@@ -83,11 +83,9 @@ const AddMediForm = ()=>{
         <View style={styles.pickerContainer}>
         <Text style={styles.label}>Type</Text>
         <Picker
-          selectedValue={type}
-          onValueChange={(itemValue, itemIndex) => setType(itemValue)}
           style={styles.picker}
         >
-          <Picker.Item label="Erreur" value="Error" />
+          <Picker.Item label="Déclaration des erreurs" value="Error" />
         </Picker>
       </View>
       <Text style={styles.label}>Titre</Text>

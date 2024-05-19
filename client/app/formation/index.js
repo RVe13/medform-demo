@@ -19,7 +19,7 @@ const Formation = () => {
                 justifyContent: "start",
                 alignItems: "center",
                 position: "relative",
-                backgroundColor: "#FFFFFF",
+                backgroundColor: "#d4b0f7",
             }}
         >
 
@@ -36,6 +36,7 @@ const Formation = () => {
 const styles = StyleSheet.create({
    
     listHeader: {
+        color: "white",
         paddingTop: StatusBar.currentHeight + 30,
         paddingBottom: 20,
         paddingHorizontal: 20,

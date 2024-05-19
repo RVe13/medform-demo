@@ -42,10 +42,10 @@ const CardsList = ({parentPage}) => {
     return (
         <>
         {(cardsData.length === 0 && parentPage !== "error") && (
-            <Text style={{ paddingHorizontal: 20 }}>Empty.</Text>
+            <Text style={{ paddingHorizontal: 20, color: "gray" }}>Empty.</Text>
         )}
         {(errorData.length === 0 && parentPage === "error") && (
-            <Text style={{ paddingHorizontal: 20 }}>Empty.</Text>
+            <Text style={{ paddingHorizontal: 20, color: "gray" }}>Empty.</Text>
         )}
         <FlatList
         refreshing={refreshing} 

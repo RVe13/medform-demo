@@ -17,13 +17,13 @@ const Error =  () => {
                 justifyContent: "start",
                 alignItems: "center",
                 position: "relative",
-                backgroundColor: "#FFFFFF",
+                backgroundColor: "#f7b0b0",
             }}
         >
 
             <Stack.Screen options={{ gestureEnabled: false }} />
             <View style={{flex: 1}}>
-                <Text style={styles.listHeader}>La Liste Des Errors: </Text>
+                <Text style={styles.listHeader}>La Liste Des erreurs Déclaré: </Text>
                 <CardsList parentPage={"error"}/>
             </View>
             <Navbar/>
@@ -34,6 +34,7 @@ const Error =  () => {
 const styles = StyleSheet.create({
    
     listHeader: {
+        color: "white",
         paddingTop: StatusBar.currentHeight + 30,
         paddingBottom: 20,
         paddingHorizontal: 20,

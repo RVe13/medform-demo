@@ -19,7 +19,7 @@
         }
       ]
     ],
-    "name": "MediForm",
+    "name": "LearnByDeclaring",
     "icon": "./assets/pill.png",
     "slug": "user",
     "extra": {
@@ -27,11 +27,14 @@
         "origin": false
       },
       "eas": {
-        "projectId": "58bb20ad-5f3c-4516-bc3f-9cbca553c266"
+        "projectId": "9d071354-1563-43e1-9269-f86df5381d73"
       }
     },
     "android": {
-      "package": "com.mediform.Admin"
+      "package": "com.mediform.Client",
+      "permissions": [
+        "android.permission.RECORD_AUDIO"
+      ]
     }
   }
 }

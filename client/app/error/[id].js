@@ -6,7 +6,7 @@ import {SERVER_URL} from "@env"
 
 const singleError= () => {
     const {id} = useLocalSearchParams();
-    const [error, setError] = useState({})
+    const [error, setError] = useState({});
     
     useEffect(() =>{
         const fetchError = async ()=>{
@@ -72,6 +72,8 @@ const styles = StyleSheet.create({
         paddingHorizontal: 30,
     },
     mainTitle:{
+        fontFamily: "serif",
+        fontStyle: "italic",
          width: '100%',
         fontSize: 20,
         color: "#000",
@@ -80,6 +82,8 @@ const styles = StyleSheet.create({
     },
 
     title:{
+        fontFamily: "serif",
+        fontStyle: "italic",
         marginTop: 10,
         width: '100%',
         fontSize: 14,
